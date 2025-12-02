@@ -1,4 +1,4 @@
-import math,random
+import math,random,pygame
 
 """
 This was adapted from a GeeksforGeeks article "Program for Sudoku Generator" by Aarti_Rathi and Ankur Trisal
@@ -115,7 +115,7 @@ class SudokuGenerator:
             if self.board[i][col] == num:
                 return False
         box_row = row - row % 3
-        box_col = row - row % 3
+        box_col = col - col % 3
         if not self.valid_in_box(box_row, box_col, num):
             return False
         return True
@@ -240,3 +240,86 @@ def generate_sudoku(size, removed):
     sudoku.remove_cells()
     board = sudoku.get_board()
     return board
+
+
+class Cell:
+    def __init__(self, value, row, col, screen):
+        self.value = value
+        self.row = row
+        self.col = col
+        self.screen = screen
+        self.sketched_value = None
+        self.selected = False
+        self.width = 100
+        self.height = 100
+
+    def set_cell_value(self, value):
+        self.value = value
+
+    def set_sketched_value(self, value):
+        self.sketched_value = value
+
+    def select(self):
+        self.selected = True
+
+    def draw(self):
+        x = self.width * self.col
+        y = self.height * self.row
+        if self.selected:
+            border_color = (255, 0, 0)
+        else:
+            border_color = (0, 0, 0)
+        pygame.draw.rect(self.screen, border_color, (x, y, self.width, self.height), 2)
+        if self.value != 0:
+            font = pygame.font.SysFont("arial", 35)
+            text = font.render(str(self.value), True, (0, 0, 0))
+            text_x = x + self.width // 2 - text.get_width() // 2
+            text_y = y + self.height // 2 - text.get_height() // 2
+            self.screen.blit(text, (text_x, text_y))
+        elif self.sketched_value:
+            font = pygame.font.SysFont("arial", 17)
+            text = font.render(str(self.sketched_value), True, (128, 128, 128))
+            text_x = x + 5
+            text_y = y + 5
+            self.screen.blit(text, (text_x, text_y))
+
+
+class Board:
+    def __init__(self, width, height, screen, difficulty):
+        self.width = width
+        self.height = height
+        self.screen = screen
+        self.difficulty = difficulty
+
+    def draw(self):
+        pass
+
+    def select(self, row, col):
+        pass
+
+    def click(self, x, y):
+        pass
+
+    def clear(self):
+        pass
+
+    def sketch(self, value):
+        pass
+
+    def place_number(self, value):
+        pass
+
+    def reset_to_original(self):
+        pass
+
+    def is_full(self):
+        pass
+
+    def update_board(self):
+        pass
+
+    def find_empty(self):
+        pass
+
+    def check_board(self):
+        pass
