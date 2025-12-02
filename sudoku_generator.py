@@ -341,11 +341,11 @@ class Board:
     def clear(self):
         if self.selected_cell and not getattr(self.selected_cell, "locked", False):
             self.selected_cell.set_cell_value(0)
-            self.selected_cell.set_sketch_value(None)
+            self.selected_cell.set_sketched_value(None)
 
     def sketch(self, value):
         if self.selected_cell:
-            self.selected_cell.set_sketch_value(value)
+            self.selected_cell.set_sketched_value(value)
 
     def place_number(self, value):
         if self.selected_cell:
@@ -353,6 +353,7 @@ class Board:
             row, col = cell.row, cell.col
             if self.original_board[row][col] == 0:
                 cell.set_cell_value(value)
+                cell.set.sketched_value(None)
                 self.update_board()
 
     def reset_to_original(self):
