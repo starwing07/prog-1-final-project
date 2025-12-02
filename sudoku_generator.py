@@ -256,8 +256,8 @@ class Cell:
         self.screen = screen
         self.sketched_value = None
         self.selected = False
-        self.width = 100
-        self.height = 100
+        self.width = 100     # Placeholder number
+        self.height = 100    # Placeholder number
 
     def set_cell_value(self, value):
         self.value = value
@@ -277,13 +277,13 @@ class Cell:
             border_color = (0, 0, 0)
         pygame.draw.rect(self.screen, border_color, (x, y, self.width, self.height), 2)
         if self.value != 0:
-            font = pygame.font.SysFont("arial", 35)
+            font = pygame.font.SysFont("arial", 40)
             text = font.render(str(self.value), True, (0, 0, 0))
             text_x = x + self.width // 2 - text.get_width() // 2
             text_y = y + self.height // 2 - text.get_height() // 2
             self.screen.blit(text, (text_x, text_y))
         elif self.sketched_value:
-            font = pygame.font.SysFont("arial", 17)
+            font = pygame.font.SysFont("arial", 20)
             text = font.render(str(self.sketched_value), True, (128, 128, 128))
             text_x = x + 5
             text_y = y + 5
