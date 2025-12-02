@@ -298,6 +298,11 @@ class Board:
         self.difficulty = difficulty
         self.rows = 9
         self.cols = 9
+
+        removed_cells = {"easy": 30, "medium": 40, "hard": 50}.get(difficulty, 40)
+        board_data = generate_sudoku(9, removed_cells)
+        self.original_board = [row[:] for row in board_data]
+        self.board = [row[:] for row in board_data]
         self.grid = [[Cell(0, r, c, screen) for c in range(self.cols)] for r in range(self.rows)]
         self.selected_cell = None
 
@@ -343,19 +348,54 @@ class Board:
             self.selected_cell.set_sketch_value(value)
 
     def place_number(self, value):
-        pass
+        if self.selected_cell:
+            cell = self.selected_cell
+            row, col = cell.row, cell.col
+            if self.original_board[row][col] == 0:
+                cell.set_cell_value(value)
+                self.update_board()
 
     def reset_to_original(self):
-        pass
+        for r in range(self.rows):
+            for c in range(self.cols):
+                self.grid[r][c].set_cell_value(self.original_board[r][c])
+        self.update_board()
 
     def is_full(self):
-        pass
+        for r in range(self.rows):
+            for c in range(self.cols):
+                if self.grid[r][c].value == 0:
+                    return False
+        return True
 
     def update_board(self):
-        pass
+        for r in range(self.rows):
+            for c in range(self.cols):
+                self.board[r][c] = self.grid[r][c].value
 
     def find_empty(self):
-        pass
+        for r in range(self.rows):
+            for c in range(self.cols):
+                if self.grid[r][c].value == 0:
+                    return (r, c)
+        return None
 
     def check_board(self):
-        pass
+        for r in range(self.rows):
+            if set(self.board[r]) != set(range(1, 10)):
+                return False
+
+        for c in range(self.cols):
+            col = [self.board[r][c] for r in range(self.rows)]
+            if set(col) != set(range(1, 10)):
+                return False
+
+        for box_row in range(0, 9, 3):
+            for box_col in range(0, 9, 3):
+                nums = []
+                for r in range(box_row, box_row + 3):
+                    for c in range(box_col, box_col + 3):
+                        nums.append(self.board[r][c])
+                if set(nums) != set(range(1, 10)):
+                    return False
+        return True
