@@ -290,21 +290,51 @@ class Board:
         self.height = height
         self.screen = screen
         self.difficulty = difficulty
+        self.rows = 9
+        self.cols = 9
+        self.grid = [[Cell(0, r, c, screen) for c in range(self.cols)] for r in range(self.rows)]
+        self.selected_cell = None
 
     def draw(self):
-        pass
+        for row in self.grid:
+            for cell in row:
+                cell.draw()
+        gap_x = self.width // self.cols
+        gap_y = self.height // self.rows
+        for i in range(self.rows + 1):
+            if i % 3 == 0:
+                thickness = 4
+            else:
+                thickness = 1
+            pygame.draw.line(self.screen, (0, 0, 0), (0, i * gap_y), (self.width, i * gap_y), thickness)
+        for j in range(self.cols + 1):
+            if j % 3 == 0:
+                thickness = 4
+            else:
+                thickness = 1
+            pygame.draw.line(self.screen, (0, 0, 0), (j * gap_x, 0), (j * gap_x, self.height), thickness)
 
     def select(self, row, col):
-        pass
+        if self.selected_cell:
+            self.selected_cell.selected = False
+        self.selected_cell = self.grid[row][col]
+        self.selected_cell.selected = True
 
     def click(self, x, y):
-        pass
+        if x < 0 or x > self.width or y < 0 or y > self.height:
+            return None
+        row = y // (self.height // self.rows)
+        col = x // (self.width // self.cols)
+        return (row, col)
 
     def clear(self):
-        pass
+        if self.selected_cell and not getattr(self.selected_cell, "locked", False):
+            self.selected_cell.set_cell_value(0)
+            self.selected_cell.set_sketch_value(None)
 
     def sketch(self, value):
-        pass
+        if self.selected_cell:
+            self.selected_cell.set_sketch_value(value)
 
     def place_number(self, value):
         pass
