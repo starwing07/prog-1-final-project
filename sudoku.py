@@ -1,6 +1,4 @@
-from SudokuGenerator import *
-from Cell import *
-from Board import *
+from sudoku_generator import *
 
 def main():
   pass
