@@ -271,8 +271,8 @@ class Cell:
         self.screen = screen
         self.sketched_value = None
         self.selected = False
-        self.width = 100  # Placeholder number
-        self.height = 100  # Placeholder number
+        self.width = 50   # Placeholder number
+        self.height = 50  # Placeholder number
 
     def set_cell_value(self, value):
         self.value = value
@@ -368,7 +368,7 @@ class Board:
             row, col = cell.row, cell.col
             if self.original_board[row][col] == 0:
                 cell.set_cell_value(value)
-                cell.set.sketched_value(None)
+                cell.set_sketched_value(None)
                 self.update_board()
 
     def reset_to_original(self):
