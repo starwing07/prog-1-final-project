@@ -264,15 +264,15 @@ def generate_sudoku(size, removed):
 
 
 class Cell:
-    def __init__(self, value, row, col, screen):
+    def __init__(self, row, col, value, width, height, screen):
         self.value = value
         self.row = row
         self.col = col
         self.screen = screen
         self.sketched_value = None
         self.selected = False
-        self.width = 50   # Placeholder number
-        self.height = 50  # Placeholder number
+        self.width = width
+        self.height = height
 
     def set_cell_value(self, value):
         self.value = value
@@ -313,12 +313,14 @@ class Board:
         self.difficulty = difficulty
         self.rows = 9
         self.cols = 9
+        self.cell_width = width // 9
+        self.cell_height = height // 9
 
         removed_cells = {"easy": 30, "medium": 40, "hard": 50}.get(difficulty, 40)
         board_data = generate_sudoku(9, removed_cells)
         self.original_board = [row[:] for row in board_data]
         self.board = [row[:] for row in board_data]
-        self.grid = [[Cell(0, r, c, screen) for c in range(self.cols)] for r in range(self.rows)]
+        self.grid = [[Cell(r, c, self.board[r][c], self.cell_width, self.cell_height, self.screen) for c in range(self.cols)] for r in range(self.rows)]
         self.selected_cell = None
 
     def draw(self):
@@ -329,13 +331,13 @@ class Board:
         gap_y = self.height // self.rows
         for i in range(self.rows + 1):
             if i % 3 == 0:
-                thickness = 4
+                thickness = 10
             else:
                 thickness = 1
             pygame.draw.line(self.screen, (0, 0, 0), (0, i * gap_y), (self.width, i * gap_y), thickness)
         for j in range(self.cols + 1):
             if j % 3 == 0:
-                thickness = 4
+                thickness = 10
             else:
                 thickness = 1
             pygame.draw.line(self.screen, (0, 0, 0), (j * gap_x, 0), (j * gap_x, self.height), thickness)

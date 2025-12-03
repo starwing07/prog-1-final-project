@@ -1,5 +1,5 @@
 import pygame
-from board import Board
+from sudoku_generator import *
 
 WIDTH = 600
 HEIGHT = 700
