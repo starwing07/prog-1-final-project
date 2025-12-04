@@ -1,5 +1,5 @@
 import pygame
-from board import Board
+from sudoku_generator import *
 
 WIDTH = 600
 HEIGHT = 700
@@ -10,7 +10,7 @@ btn_color = (200, 200, 200)
 btn_hover = (170, 170, 170)
 txt_color = (0, 0, 0)
 
-
+# Draws a button
 def draw_btn(screen, rect, text, font, mpos):
     if rect.collidepoint(mpos):
         c = btn_hover
@@ -21,7 +21,7 @@ def draw_btn(screen, rect, text, font, mpos):
     lbl_rect = lbl.get_rect(center=rect.center)
     screen.blit(lbl, lbl_rect)
 
-
+# Start screen with difficulty levels
 def start_screen(screen, tfont, bfont, easy_r, med_r, hard_r):
     mpos = pygame.mouse.get_pos()
     screen.fill(bg)
@@ -35,19 +35,20 @@ def start_screen(screen, tfont, bfont, easy_r, med_r, hard_r):
     draw_btn(screen, med_r, "Medium", bfont, mpos)
     draw_btn(screen, hard_r, "Hard", bfont, mpos)
 
-
+# Main game screen
 def game_screen(screen, brd, font, reset_r, restart_r, exit_r):
     mpos = pygame.mouse.get_pos()
     screen.fill(bg)
 
-    if brd:  # make sure board exists
+# Draw board make sure it exists
+    if brd:
         brd.draw()
 
     draw_btn(screen, reset_r, "Reset", font, mpos)
     draw_btn(screen, restart_r, "Restart", font, mpos)
     draw_btn(screen, exit_r, "Exit", font, mpos)
 
-
+# Win/Lose screen
 def end_screen(screen, msg, tfont, bfont, restart_r, exit_r):
     mpos = pygame.mouse.get_pos()
     screen.fill(bg)
@@ -90,6 +91,7 @@ def main():
             if event.type == pygame.QUIT:
                 running = False
 
+# Start Screen
             if game_state == "start":
                 if event.type == pygame.MOUSEBUTTONDOWN and event.button == 1:
                     x, y = event.pos
@@ -111,7 +113,7 @@ def main():
                         board.select(curr_row, curr_col)
                         val = 0
                         game_state = "playing"
-
+# Playing Screen
             elif game_state == "playing":
                 if event.type == pygame.MOUSEBUTTONDOWN and event.button == 1:
                     x, y = event.pos
@@ -159,7 +161,7 @@ def main():
                                     game_state = "win"
                                 else:
                                     game_state = "lose"
-
+# End Screen
             elif game_state == "win" or game_state == "lose":
                 if event.type == pygame.MOUSEBUTTONDOWN and event.button == 1:
                     x, y = event.pos
